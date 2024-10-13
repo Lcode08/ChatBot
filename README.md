@@ -35,7 +35,12 @@ This ChatBot application leverages the Google Generative AI to provide a convers
 
 ### Installation
 
-1. **Clone the repository:**
+1. Clone the repository:
    ```bash
    git clone https://github.com/yourusername/repository-name.git
    cd repository-name
+2. Navigate to the project directory
+   ```bash
+   cd ChatBot
+3.
+
