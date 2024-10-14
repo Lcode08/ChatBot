@@ -1,7 +1,7 @@
 // src/services/apiService.js
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000/api/content'; // Update with your server URL if needed
+const API_URL = 'https://chatbot-l9s2.onrender.com/api/content'; // Update with your server URL if needed
 
 // parameter passed as a question and will now recieve the response in promise<string>
 export const fetchContent = async (question) => {
