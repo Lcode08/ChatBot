@@ -2,7 +2,7 @@
 
 ## Overview
 
-This ChatBot application leverages the Google Generative AI to provide a conversational interface. Users can ask questions, and the AI generates responses. The application supports voice input and output, enhancing user interaction and accessibility.
+This ChatBot application leverages the Google Generative AI to provide a conversational interface. Users can ask questions, and the AI generates responses in real-time. The application supports both voice input and output, enhancing user interaction and accessibility.
 
 ## Features
 
@@ -23,7 +23,7 @@ This ChatBot application leverages the Google Generative AI to provide a convers
   - Google Generative AI API
 - **Deployment:** 
   - Vercel (Frontend)
-  - Heroku (Backend)
+  - Render (Backend)
 
 ## Getting Started
 
@@ -31,7 +31,7 @@ This ChatBot application leverages the Google Generative AI to provide a convers
 
 - Node.js (v14 or higher)
 - NPM (Node Package Manager)
-- Git
+- Git (to clone the repository)
 
 ### Installation
 
@@ -39,8 +39,17 @@ This ChatBot application leverages the Google Generative AI to provide a convers
    ```bash
    git clone https://github.com/yourusername/repository-name.git
    cd repository-name
-2. Navigate to the project directory
+2. Install dependencies:
    ```bash
-   cd ChatBot
-3.
+   npm install
+3. Run the app:
+   npm start
+   
+License
+This project is open-source under the MIT License.
+
+Contact
+If you have any questions or feedback, feel free to contact me via email:
+
+Lokesh Patil: lokeshb.p.2025@gmail.com
 
