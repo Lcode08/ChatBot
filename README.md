@@ -4,6 +4,8 @@
 
 This ChatBot application leverages the Google Generative AI to provide a conversational interface. Users can ask questions, and the AI generates responses in real-time. The application supports both voice input and output, enhancing user interaction and accessibility.
 
+### Live Demo: [ChatBot Application](https://chat-bot-by-lokesh.vercel.app/)
+
 ## Features
 
 - **Text Input:** Users can type their questions in a text box.
@@ -54,5 +56,5 @@ This project is open-source under the MIT License.
 
 If you have any questions or feedback, feel free to contact me via email:
 
- # Lokesh Patil: lokeshb.p.2025@gmail.com
+## Lokesh Patil: lokeshb.p.2025@gmail.com
 
