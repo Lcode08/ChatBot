@@ -5,6 +5,8 @@ const express = require('express');
 const bodyParser = require("body-parser");
 const cors = require('cors');
 
+app.use(cors({ origin: 'https://chat-bot-by-lokesh.vercel.app/' })); //by this backend (Render) allows requests from your Vercel frontend.
+
 // Initialize Express app
 const app = express();
 
