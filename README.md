@@ -46,13 +46,13 @@ This ChatBot application leverages the Google Generative AI to provide a convers
    ```bash
    npm start
    
-### License
+## License
 
 This project is open-source under the MIT License.
 
-### Contact
+## Contact
 
 If you have any questions or feedback, feel free to contact me via email:
 
-Lokesh Patil: lokeshb.p.2025@gmail.com
+ # Lokesh Patil: lokeshb.p.2025@gmail.com
 
