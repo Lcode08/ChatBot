@@ -8,12 +8,12 @@ const cors = require('cors');
 // Initialize Express app
 const app = express();
 
-app.use(cors({ origin: 'https://chat-bot-by-lokesh.vercel.app/' })); //by this backend (Render) allows requests from your Vercel frontend.
-
 // Middleware setup
 app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Parse JSON request bodies
 app.use(bodyParser.json()); // Also parse JSON request bodies (optional, can be removed)
+
+app.use(cors({ origin: 'https://chat-bot-by-lokesh.vercel.app/' })); //by this backend (Render) allows requests from your Vercel frontend.
 
 // Health check route
 app.get('/', (req, res) => {
