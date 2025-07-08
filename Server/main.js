@@ -32,7 +32,7 @@ const PORT = process.env.PORT || 8000;
 
 // Initialize Google Generative AI with API key from environment variables
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
 // Function to generate content based on the provided prompt
 const generateContent = async (prompt) => {
