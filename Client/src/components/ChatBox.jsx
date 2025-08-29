@@ -12,7 +12,7 @@ function formatMessageText(text) {
   return (
     <div>
       {lines.map((line, index) => {
-        // Render different HTML elements based on the line's prefix
+         // Render different HTML elements based on the line's prefix
         if (line.startsWith("##")) {
           return (
             <h2 key={index} className="text-xl font-semibold mb-2">

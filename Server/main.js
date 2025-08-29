@@ -16,16 +16,6 @@ app.get('/', (req, res) => {
     res.send("Hello world! Gemini"); // Simple response for root route
 });
 
-// Test endpoint to check Gemini API
-app.get('/test', async (req, res) => {
-    try {
-        const result = await generateContent("Say hello");
-        res.json({ success: true, result });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
-    }
-});
-
 // Define port for the server
 const PORT = process.env.PORT || 8000;
 
@@ -45,10 +35,8 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 // Function to generate content based on the provided prompt
 const generateContent = async (prompt) => {
     try {
-        console.log('Generating content for prompt:', prompt);
         const result = await model.generateContent(prompt); // Generate content
         const text = result.response.text(); // Return the generated text
-        console.log('Generated text:', text);
         return text;
     } catch (err) {
         console.error('Gemini API Error:', err); // Log any errors that occur
@@ -69,8 +57,6 @@ const generateContent = async (prompt) => {
 // API endpoint to handle content generation requests
 app.post('/api/content', async (req, res) => {
     try {
-        console.log('Received request:', req.body);
-        
         const question = req.body.question; // Extract question from request body
         
         // Validate input
@@ -78,10 +64,7 @@ app.post('/api/content', async (req, res) => {
             return res.status(400).send({ error: "Question is required and must be a non-empty string" });
         }
         
-        console.log('Processing question:', question);
         const result = await generateContent(question); // Generate content
-        console.log('Generated result:', result);
-        
         res.send({ result }); // Send back the generated result
     } catch (err) {
         console.error('Error in /api/content:', err);
