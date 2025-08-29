@@ -8,7 +8,20 @@ const cors = require('cors');
 const app = express();
 
 // Middleware setup
-app.use(cors()); // Enable CORS for all routes
+app.use(cors({
+    origin: (origin, callback) => {
+        const allowedOrigins = [
+            'https://chat-bot-by-lokesh.vercel.app',
+            'http://localhost:3000', // For local development
+            'http://127.0.0.1:3000'  // Alternative localhost
+        ];
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
+})); // Enable dynamic CORS
 app.use(express.json()); // Parse JSON request bodies
 
 // Health check route
@@ -30,7 +43,7 @@ if (!process.env.API_KEY) {
 }
 
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest" });
 
 // Function to generate content based on the provided prompt
 const generateContent = async (prompt) => {

@@ -44,7 +44,7 @@ function ChatBox({ messages }) {
   const speakAIResponse = (text) => {
     const newUtterance = new SpeechSynthesisUtterance(text);
     const voices = window.speechSynthesis.getVoices();
-    const selectedVoice = voices.find(voice => voice.lang === "hi-IN"); // Select Indian English voice
+    const selectedVoice = voices.find(voice => voice.lang === "en-IN" || voice.lang === "en-US"); // Select Indian English voice
 
     // If the selected voice is found, assign it to the utterance
     if (selectedVoice) {
