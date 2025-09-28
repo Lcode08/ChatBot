@@ -43,7 +43,7 @@ if (!process.env.API_KEY) {
 }
 
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest" });
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
 // Function to generate content based on the provided prompt
 const generateContent = async (prompt) => {
