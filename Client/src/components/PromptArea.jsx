@@ -39,6 +39,14 @@ function PromptArea({ sendMessage, endSession, sessionActive }) {
     }
   };
 
+  // Handle Enter key press in the input field
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent form submission if inside a form
+      handleSend(); // Trigger the send function
+    }
+  };
+
   // Toggles speech recognition on or off
   const toggleListening = () => {
     if (isListening) {
@@ -65,6 +73,7 @@ function PromptArea({ sendMessage, endSession, sessionActive }) {
         type="text"
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
+        onKeyDown={handleKeyDown}
         className="w-2/3 p-2 sm:p-2 lg:p-4 bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         placeholder="Ask Something...."
       />
