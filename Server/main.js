@@ -21,7 +21,7 @@ app.use(cors({
             callback(new Error('Not allowed by CORS'));
         }
     }
-})); 
+}));
 app.use(express.json()); // Parse JSON request bodies
 
 // Health check route
@@ -44,34 +44,47 @@ if (!process.env.API_KEY) {
 
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 
-// Pick a valid model (gemini-1.5-pro OR gemini-1.5-flash)
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+let model; // Will store the selected model
 
-// Function to list available models
-const listModels = async () => {
+// Function to initialize the model dynamically
+const initializeModel = async () => {
     try {
-        console.log("📌 Fetching available Gemini models...");
+        console.log("📌 Fetching available models...");
         const result = await genAI.listModels();
-        if (result.models && result.models.length > 0) {
-            console.log("✅ Available models:");
-            result.models.forEach((m, i) => {
-                console.log(`${i + 1}. ${m.name}`);
-            });
-        } else {
-            console.log("⚠️ No models found.");
+
+        if (!result.models || result.models.length === 0) {
+            console.error("❌ No models available for this API key");
+            process.exit(1);
         }
+
+        console.log("✅ Available models:");
+        result.models.forEach((m, i) => console.log(`${i + 1}. ${m.name} - ${m.description || ''}`));
+
+        // Pick the first model that supports generateContent
+        model = result.models.find(m => m.supported_methods && m.supported_methods.includes("generateContent"));
+
+        if (!model) {
+            console.error("❌ No model supports generateContent. Cannot proceed.");
+            process.exit(1);
+        }
+
+        console.log(`✅ Using model: ${model.name} for content generation`);
     } catch (err) {
         console.error("❌ Error fetching models:", err.message);
+        process.exit(1);
     }
 };
 
 // Function to generate content
 const generateContent = async (prompt) => {
+    if (!model) throw new Error("Model not initialized");
+
     try {
-        const result = await model.generateContent(prompt);
+        const generativeModel = genAI.getGenerativeModel({ model: model.name });
+        const result = await generativeModel.generateContent(prompt);
         return result.response.text();
     } catch (err) {
-        console.error('❌ Gemini API Error:', err);
+        console.error("❌ Gemini API Error:", err);
         throw new Error(`Content generation failed: ${err.message}`);
     }
 };
@@ -93,8 +106,8 @@ app.post('/api/content', async (req, res) => {
     }
 });
 
-// Start server
+// Start server and initialize model
 app.listen(PORT, async () => {
     console.log(`🚀 Server is running on port ${PORT}...`);
-    await listModels(); // List models when server starts
+    await initializeModel(); // Fetch models and select one
 });
