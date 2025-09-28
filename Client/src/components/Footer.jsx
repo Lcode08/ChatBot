@@ -2,7 +2,7 @@ import React from "react";
 
 function Footer() {
   return (
-    <footer className="w-full bg-gray-800 text-gray-300 p-2 flex flex-col text-center fixed bottom-0 left-0 lg:block">
+    <footer className="w-full bg-gray-800 text-gray-300 p-4 flex flex-col text-center border-t border-gray-700">
       {/* Developer Name */}
       <p className="text-lg font-semibold">Lokesh Patil</p>
 

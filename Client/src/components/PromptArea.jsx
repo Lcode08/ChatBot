@@ -57,44 +57,59 @@ function PromptArea({ sendMessage, endSession, sessionActive }) {
   };
 
   return (
-    <div className={`prompt-area w-full sm:relative sm:bottom-0 lg:fixed flex items-center justify-center bg-gray-800 p-2 sm:p-2 lg:p-4 border-t border-gray-700 ${sessionActive ? 'bottom-0' : 'mb-20 bottom-4'}`}>
-      
-      {/* Button to toggle voice recognition */}
-      <button
-        onClick={toggleListening}
-        className={`bg-blue-500 p-2 sm:h-10 sm:w-10 lg:h-14 lg:w-14 flex items-center justify-center rounded-l-lg text-white hover:bg-blue-600 transition-all duration-300 ${isListening ? "bg-red-500" : ""}`}
-      >
-        {/* Switch between microphone and stop icons based on listening state */}
-        {isListening ? <FaStop className="sm:h-5 sm:w-5 lg:h-7 lg:w-7"/> : <FaMicrophone className="sm:h-5 sm:w-5 lg:h-7 lg:w-7" />}
-      </button>
+    <div className="bg-gray-800 border-t border-gray-700 p-4">
+      <div className="max-w-4xl mx-auto">
+        <div className="flex items-center gap-2">
+          {/* Button to toggle voice recognition */}
+          <button
+            onClick={toggleListening}
+            className={`p-3 h-12 w-12 flex items-center justify-center rounded-lg text-white transition-all duration-300 ${
+              isListening ? "bg-red-500 hover:bg-red-600" : "bg-gray-600 hover:bg-gray-500"
+            }`}
+            title={isListening ? "Stop listening" : "Start voice input"}
+          >
+            {/* Switch between microphone and stop icons based on listening state */}
+            {isListening ? <FaStop className="h-4 w-4"/> : <FaMicrophone className="h-4 w-4" />}
+          </button>
 
-      {/* Text input for the prompt */}
-      <input
-        type="text"
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-        onKeyDown={handleKeyDown}
-        className="w-2/3 p-2 sm:p-2 lg:p-4 bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Ask Something...."
-      />
+          {/* Text input for the prompt */}
+          <div className="flex-1 relative">
+            <input
+              type="text"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="w-full p-3 h-12 bg-gray-700 text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 border-0 pr-12"
+              placeholder="Message ChatBot..."
+            />
+            
+            {/* Send button inside input */}
+            <button
+              onClick={handleSend}
+              disabled={!prompt.trim()}
+              className={`absolute right-2 top-1/2 transform -translate-y-1/2 p-2 rounded-lg transition-all duration-300 ${
+                prompt.trim() 
+                  ? "bg-blue-500 hover:bg-blue-600 text-white" 
+                  : "bg-gray-600 text-gray-400 cursor-not-allowed"
+              }`}
+              title="Send message"
+            >
+              <img src={sendImg} alt="Send" className="w-4 h-4" />
+            </button>
+          </div>
 
-      {/* Button to send the prompt */}
-      <button
-        onClick={handleSend}
-        className="bg-blue-500 p-2 sm:h-10 sm:w-10 lg:h-14 lg:w-14 rounded-r-lg text-white hover:bg-blue-600 transition-all duration-300"
-      >
-        <img src={sendImg} alt="Send" className="sm:w-5 sm:h-5 lg:w-7 lg:h-7" />
-      </button>
-
-      {/* End session button, shown only if the session is active */}
-      {sessionActive && (
-        <button
-          onClick={endSession}
-          className="bg-red-500 p-2 sm:text-base sm:p-2 lg:text-xl lg:p-3 text-white ml-4 rounded-lg hover:bg-red-600 focus:outline-none transition-all duration-300"
-        >
-          End Session
-        </button>
-      )}
+          {/* End session button, shown only if the session is active */}
+          {sessionActive && (
+            <button
+              onClick={endSession}
+              className="bg-gray-600 hover:bg-gray-500 px-4 py-3 text-white rounded-lg focus:outline-none transition-all duration-300 text-sm font-medium"
+              title="Start new chat"
+            >
+              New Chat
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

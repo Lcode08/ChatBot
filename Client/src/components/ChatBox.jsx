@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import aiImg from "../Assets/Ai.png"; // AI avatar image
 import userImg from "../Assets/User.png"; // User avatar image
 import loadingGif from "../Assets/loading.gif"; // Loading GIF for AI responses
@@ -39,6 +39,12 @@ function formatMessageText(text) {
 
 function ChatBox({ messages }) {
   const [utterance, setUtterance] = useState(null); // State to track the speech utterance
+  const messagesEndRef = useRef(null); // Reference to scroll to bottom
+
+  // Auto-scroll to bottom when new messages arrive
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   // Function to speak the AI response
   const speakAIResponse = (text) => {
@@ -78,69 +84,86 @@ function ChatBox({ messages }) {
   };
 
   return (
-    <div className="chat-container w-full max-h-[calc(100vh-120px)] overflow-y-auto flex flex-col gap-5 p-5">
-      {messages.map((message, index) => (
-        <div
-          key={index}
-          className={`flex items-start ${
-            message.sender === "user" ? "flex-row-reverse" : "flex-row"
-          }`}
-        >
-          {/* Display avatar based on the sender */}
-          <img
-            src={message.sender === "user" ? userImg : aiImg}
-            alt={message.sender === "user" ? "User Icon" : "AI Icon"}
-            className={`w-16 h-16 rounded-full mx-4 my-4 transition-transform duration-300 p-0.5 ${
-              message.sender === "user"
-                ? "border-4 border-blue-500 bg-white hover:shadow-lg hover:scale-105"
-                : "border-4 border-blue-200 bg-white hover:shadow-xl hover:scale-105"
-            }`}
-            style={{
-              boxShadow: message.sender === "user"
-                ? "0px 0px 10px rgba(0, 0, 255, 0.5)"   // Blue shadow for the user
-                : "0px 0px 10px rgba(0, 255, 255, 0.5)" // Cyan shadow for the AI
-            }}
-          />
-
-          {/* Message Box */}
+    <div className="h-full overflow-y-auto">
+      <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+        {messages.map((message, index) => (
           <div
-            className={`flex ${
-              message.sender === "user"
-                ? "bg-blue-500 text-white rounded-[30px_30px_0_30px] ml-auto max-w-[700px] px-5 py-3"
-                : "bg-blue-300 text-gray-800 rounded-[30px_30px_30px_0] max-w-[800px] px-5 py-3"
-            } text-xl shadow-md`}
+            key={index}
+            className={`flex items-start gap-4 ${
+              message.sender === "user" ? "flex-row-reverse" : "flex-row"
+            }`}
           >
-            {message.loading ? (
-              <img src={loadingGif} className="w-11 h-11" alt="Loading..." /> // Show loading GIF while processing
-            ) : (
-              <div className="flex flex-col">
-                {formatMessageText(message.text)}  {/* Format and display AI response text */}
+            {/* Display avatar based on the sender */}
+            <div className="flex-shrink-0">
+              <img
+                src={message.sender === "user" ? userImg : aiImg}
+                alt={message.sender === "user" ? "User Icon" : "AI Icon"}
+                className={`w-10 h-10 rounded-full transition-transform duration-300 ${
+                  message.sender === "user"
+                    ? "border-2 border-blue-500 bg-white hover:shadow-lg hover:scale-105"
+                    : "border-2 border-blue-200 bg-white hover:shadow-xl hover:scale-105"
+                }`}
+                style={{
+                  boxShadow: message.sender === "user"
+                    ? "0px 0px 8px rgba(59, 130, 246, 0.4)"   // Blue shadow for the user
+                    : "0px 0px 8px rgba(34, 197, 94, 0.4)" // Green shadow for the AI
+                }}
+              />
+            </div>
 
-                {/* Icons for audio, stop, and copy actions */}
-                {message.sender === "ai" && (
-                  <div className="flex space-x-2 mt-2">
-                    <FaVolumeUp
-                      className="cursor-pointer text-blue-500 hover:text-blue-700"
-                      onClick={() => speakAIResponse(message.text)} // Trigger text-to-speech
-                      title="Read Aloud"
-                    />
-                    <FaStop
-                      className="cursor-pointer text-red-500 hover:text-red-700"
-                      onClick={stopSpeaking} // Stop speech synthesis
-                      title="Stop"
-                    />
-                    <FaCopy
-                      className="cursor-pointer text-blue-500 hover:text-blue-700"
-                      onClick={() => copyToClipboard(message.text)} // Copy message text to clipboard
-                      title="Copy"
-                    />
+            {/* Message Box */}
+            <div
+              className={`flex-1 max-w-[80%] ${
+                message.sender === "user"
+                  ? "bg-blue-600 text-white rounded-2xl rounded-tr-sm px-4 py-3"
+                  : "bg-gray-100 text-gray-900 rounded-2xl rounded-tl-sm px-4 py-3"
+              } shadow-sm`}
+            >
+              {message.loading ? (
+                <div className="flex items-center justify-center py-2">
+                  <img src={loadingGif} className="w-8 h-8" alt="Loading..." />
+                </div>
+              ) : (
+                <div className="flex flex-col">
+                  <div className="text-base leading-relaxed">
+                    {formatMessageText(message.text)}
                   </div>
-                )}
-              </div>
-            )}
+
+                  {/* Icons for audio, stop, and copy actions */}
+                  {message.sender === "ai" && (
+                    <div className="flex space-x-3 mt-3 pt-2 border-t border-gray-200">
+                      <button
+                        onClick={() => speakAIResponse(message.text)}
+                        className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors"
+                        title="Read Aloud"
+                      >
+                        <FaVolumeUp className="w-4 h-4 text-gray-600" />
+                      </button>
+                      <button
+                        onClick={stopSpeaking}
+                        className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 hover:bg-red-100 transition-colors"
+                        title="Stop"
+                      >
+                        <FaStop className="w-4 h-4 text-red-600" />
+                      </button>
+                      <button
+                        onClick={() => copyToClipboard(message.text)}
+                        className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 hover:bg-blue-100 transition-colors"
+                        title="Copy"
+                      >
+                        <FaCopy className="w-4 h-4 text-blue-600" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+        
+        {/* Invisible element to scroll to */}
+        <div ref={messagesEndRef} />
+      </div>
     </div>
   );
 }
